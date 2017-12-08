@@ -16,6 +16,8 @@ const windowSize = Dimensions.get('window');
 //size definistions HERE
 const standardComponentWidth = (0.82 * windowSize.width)
 
+import CellUserDataBar from './src/components/CellUserDataBar';
+
 const colors= {
   facebook:'rgb(59, 89, 152)',
   text: 'rgba(255, 255, 255, 0.7)',
