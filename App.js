@@ -1,8 +1,27 @@
 import React, {Component} from 'react';
 import { ImageBackground, Image, Text, View, StatusBar, ScrollView } from 'react-native';
-import Dimensions from 'Dimensions'
+import Dimensions from 'Dimensions';
+//import custom Component
+import LoginButton from './src/components/LoginButton';
 
 const windowSize = Dimensions.get('window');
+
+//size definistions HERE
+const standardComponentWidth = (0.82*windowSize.width)
+
+const colors= {
+  facebook:'rgb(59, 89, 152)',
+  text: 'rgba(255, 255, 255, 0.7)',
+  socialMediaButtonBorderColor: 'rgba(255, 255, 255, 0.35)'
+}
+
+const sizes = {
+
+  buttonHeight: 45,
+  pageFontSize: 12,
+  borderWidth: 0.8,
+  borderRadius: 5
+}
 export default class App extends Component {
   constructor(props){
     super(props);
@@ -49,7 +68,7 @@ const viewstyles = {
     alignItems: 'center',
   },
   instagramLogo:{
-      width: (0.45 * windowSize.width),
+      width: (0.50 * windowSize.width),
       height: (0.15 * windowSize.width),
       marginBottom: 25,
       alignSelf: 'center'
