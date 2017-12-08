@@ -50,9 +50,17 @@ export default class App extends Component {
     console.log ('Button succesfully tapped');
   }
 
+  signUpFooterComponent = () => {
+    return(
+      <View style={viewStyles.signUpFooter}>
+       {this.forgotLoginDetailsComponent('Dont have an account', 'Sign up', urls.instagramSignUp)}
+      </View>
+    );
+  }
+
   loginWithTwitterComponent = () =>{
     return(
-      <View Style={viewStyles.twitterLogin}>
+      <View style={viewStyles.twitterLogin}>
         <Image
           resizeMode={'contain'}
           style={viewStyles.twitterIcon}
@@ -66,7 +74,6 @@ export default class App extends Component {
         </TappableText>
       </View>
     );
-
 
   }
 
@@ -92,6 +99,7 @@ export default class App extends Component {
       </View>
     );
   }
+
   loginScreenComponent = () =>{
     return(
       <ImageBackground
@@ -130,10 +138,14 @@ export default class App extends Component {
           >
             acebook
           </LoginButton>
+
           {this.forgotLoginDetailsComponent('Having issues logging in,', 'Get help here', urls.forgotInstagramLogin)}
           {this.orSepratorComponent()}
           {this.loginWithTwitterComponent()}
+
         </ScrollView>
+
+        {this.signUpFooterComponent()}
 
       </ImageBackground>
     );
@@ -215,6 +227,16 @@ const viewStyles = {
     width: sizes.twitterIcon,
     height: sizes.twitterIcon,
     marginHorizontal:5
+  },
+  signUpFooter:{
+    flex:0.3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderColor: 'rgba(255, 255, 255, 0.25)',
+    shadowColor: 'black',
+    shadowOffset: {width: 0, height: 5.5},
+    width: '100%'
   }
 };
 const textStyles = {
