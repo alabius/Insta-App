@@ -27,7 +27,8 @@ const sizes = {
   buttonHeight: 45,
   pageFontSize: 12,
   borderWidth: 0.8,
-  borderRadius: 5
+  borderRadius: 5,
+  twitterIcon: 25
 }
 const urls = {
   forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
@@ -49,20 +50,49 @@ export default class App extends Component {
     console.log ('Button succesfully tapped');
   }
 
-  forgotLoginDetailsComponent = () =>{
+  loginWithTwitterComponent = () =>{
+    return(
+      <View Style={viewStyles.twitterLogin}>
+        <Image
+          resizeMode={'contain'}
+          style={viewStyles.twitterIcon}
+          source={require('./src/images/icons/twitter_bird.png')}
+        />
+        <TappableText
+          textStyle={[textStyles.forgotLoginDetails, textStyles.forgotLoginDetailsBold, {fontSize: 12}]}
+          textTapped={() => Linking.openURL(urls.twitterLogin) }
+        >
+          Login with Twitter
+        </TappableText>
+      </View>
+    );
+
+
+  }
+
+  forgotLoginDetailsComponent = (normalText, boldText, url) =>{
     return(
       <View style={viewStyles.forgotLoginDetails}>
-        <Text style={textStyles.forgotLoginDetails}>Forgot Your login details?</Text>
+        <Text style={textStyles.forgotLoginDetails}>{normalText}</Text>
         <TappableText
           textStyle={[textStyles.forgotLoginDetails, textStyles.forgotLoginDetailsBold]}
-          textTapped={ () => Linking.openURL(urls.forgotInstagramLogin) }
+          textTapped={ () => Linking.openURL(url) }
         >
-        Get help signing in</TappableText>
+        {boldText}
+        </TappableText>
+      </View>
+    );
+  }
+  orSepratorComponent = () =>{
+    return(
+      <View style={viewStyles.orSeparatorContainer}>
+        <View style={viewStyles.orSeparatorLine}/>
+        <Text style={textStyles.orSeparatorTextStyle}>OR</Text>
+        <View style={viewStyles.orSeparatorLine}/>
       </View>
     );
   }
   loginScreenComponent = () =>{
-
     return(
       <ImageBackground
         style={viewStyles.container}
@@ -100,7 +130,9 @@ export default class App extends Component {
           >
             acebook
           </LoginButton>
-          {this.forgotLoginDetailsComponent()}
+          {this.forgotLoginDetailsComponent('Having issues logging in,', 'Get help here', urls.forgotInstagramLogin)}
+          {this.orSepratorComponent()}
+          {this.loginWithTwitterComponent()}
         </ScrollView>
 
       </ImageBackground>
@@ -156,8 +188,34 @@ const viewStyles = {
     justifyContent: 'center',
     padding: 10,
     marginTop:10
+  },
+  orSeparatorContainer:{
+    flexDirection:'row',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 12
+  },
+  orSeparatorLine:{
+    height: 1,
+    flex: 5,
+    backgroundColor: colors.socialMediaButtonBorderColor,
+    borderColor: colors.socialMediaButtonBorderColor,
+    borderWidth:0.5,
+    marginHorizontal:5
+  },
+  twitterLogin:{
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginTop:10
+  },
+  twitterIcon:{
+    width: sizes.twitterIcon,
+    height: sizes.twitterIcon,
+    marginHorizontal:5
   }
-
 };
 const textStyles = {
   instagramLoginButtonTextStyle:{
@@ -172,5 +230,12 @@ const textStyles = {
   },
   forgotLoginDetailsBold:{
     fontWeight: 'bold'
+  },
+  orSeparatorTextStyle:{
+    color:'white',
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    fontSize: 13
   }
+
 }
