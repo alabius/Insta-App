@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
-import { ImageBackground, Image, Text, View, StatusBar, ScrollView } from 'react-native';
+
+import { ImageBackground, Image, Text, View, StatusBar, ScrollView, Linking } from 'react-native';
+
 import Dimensions from 'Dimensions';
+
 //import custom Component
 import LoginButton from './src/components/LoginButton';
 
+//import TappableText
+import TappableText from './src/components/TappableText';
+
+//create responsive diments for all devices
 const windowSize = Dimensions.get('window');
 
 //size definistions HERE
@@ -22,6 +29,14 @@ const sizes = {
   borderWidth: 0.8,
   borderRadius: 5
 }
+const urls = {
+  forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
+  twitterLogin: 'https://twitter.com/login?lang=en',
+  instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en',
+  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=cda6dee7d8164a868150910407962f52&redirect_uri=http://www.kaitechconsulting.com&response_type=token&scope=basic+follower_list+comments+likes',
+  instagramLogout: 'https://instagram.com/accounts/logout',
+  instagramBase: 'https://www.instagram.com/',
+};
 export default class App extends Component {
   constructor(props){
     super(props);
@@ -34,7 +49,20 @@ export default class App extends Component {
     console.log ('Button succesfully tapped');
   }
 
+  forgotLoginDetailsComponent = () =>{
+    return(
+      <View style={viewStyles.forgotLoginDetails}>
+        <Text style={textStyles.forgotLoginDetails}>Forgot Your login details?</Text>
+        <TappableText
+          textStyle={[textStyles.forgotLoginDetails, textStyles.forgotLoginDetailsBold]}
+          textTapped={ () => Linking.openURL(urls.forgotInstagramLogin) }
+        >
+        Get help signing in</TappableText>
+      </View>
+    );
+  }
   loginScreenComponent = () =>{
+
     return(
       <ImageBackground
         style={viewStyles.container}
@@ -54,7 +82,7 @@ export default class App extends Component {
 
           <LoginButton
             buttonViewStyle={viewStyles.instagramLoginButtonView}
-            buttonTextStyle={textStyle.instagramLoginButtonTextStyle}
+            buttonTextStyle={textStyles.instagramLoginButtonTextStyle}
             buttonTapped={this.buttonTapped}
             touchableHighlightStyle={viewStyles.instagramLoginButtonTouchableHighlightStyle}
             activeOpacity={0.75}
@@ -64,7 +92,7 @@ export default class App extends Component {
 
           <LoginButton
             buttonViewStyle={[viewStyles.instagramLoginButtonView, viewStyles.facebookLoginButtonView]}
-            buttonTextStyle={textStyle.instagramLoginButtonTextStyle}
+            buttonTextStyle={textStyles.instagramLoginButtonTextStyle}
             buttonTapped={this.buttonTapped}
             touchableHighlightStyle={[viewStyles.instagramLoginButtonTextStyle, viewStyles.facebookHighlightView]}
             activeOpacity={0.75}
@@ -72,6 +100,7 @@ export default class App extends Component {
           >
             acebook
           </LoginButton>
+          {this.forgotLoginDetailsComponent()}
         </ScrollView>
 
       </ImageBackground>
@@ -120,11 +149,28 @@ const viewStyles = {
   facebookHighlightView:{
     marginTop: 20,
     marginBottom:10
+  },
+  forgotLoginDetails:{
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginTop:10
   }
+
 };
-const textStyle = {
+const textStyles = {
   instagramLoginButtonTextStyle:{
     color: colors.text,
     fontWeight: '500'
   },
+  forgotLoginDetails:{
+    color: 'white',
+    backgroundColor: 'transparent',
+    fontSize: sizes.pageFontSize,
+    marginRight: 3
+  },
+  forgotLoginDetailsBold:{
+    fontWeight: 'bold'
+  }
 }
