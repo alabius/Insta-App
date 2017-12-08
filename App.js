@@ -7,7 +7,7 @@ import LoginButton from './src/components/LoginButton';
 const windowSize = Dimensions.get('window');
 
 //size definistions HERE
-const standardComponentWidth = (0.82*windowSize.width)
+const standardComponentWidth = (0.82 * windowSize.width)
 
 const colors= {
   facebook:'rgb(59, 89, 152)',
@@ -30,11 +30,14 @@ export default class App extends Component {
 
     }
   }
+  buttonTapped = () =>{
+    console.log ('Button succesfully tapped');
+  }
 
   loginScreenComponent = () =>{
     return(
       <ImageBackground
-        style={viewstyles.container}
+        style={viewStyles.container}
         resizeMode={'cover'}
         source={require('./src/images/Instabackground.jpg')}
         >
@@ -42,12 +45,33 @@ export default class App extends Component {
           backgroundColor={'transparent'}
           barStyle={'light-content'}
         />
-        <ScrollView  style ={viewstyles.scrollViewStyle}>
+        <ScrollView  style ={viewStyles.scrollViewStyle}>
           <Image
-            style={viewstyles.instagramLogo}
+            style={viewStyles.instagramLogo}
             resizeMode={'contain'}
             source={require('./src/images/instagram-text-logo.png')}
           />
+
+          <LoginButton
+            buttonViewStyle={viewStyles.instagramLoginButtonView}
+            buttonTextStyle={textStyle.instagramLoginButtonTextStyle}
+            buttonTapped={this.buttonTapped}
+            touchableHighlightStyle={viewStyles.instagramLoginButtonTouchableHighlightStyle}
+            activeOpacity={0.75}
+          >
+            Log In (Via instagram)
+          </LoginButton>
+
+          <LoginButton
+            buttonViewStyle={[viewStyles.instagramLoginButtonView, viewStyles.facebookLoginButtonView]}
+            buttonTextStyle={textStyle.instagramLoginButtonTextStyle}
+            buttonTapped={this.buttonTapped}
+            touchableHighlightStyle={[viewStyles.instagramLoginButtonTextStyle, viewStyles.facebookHighlightView]}
+            activeOpacity={0.75}
+            iconSource={require('./src/images/facebook-white-logo.png')}
+          >
+            acebook
+          </LoginButton>
         </ScrollView>
 
       </ImageBackground>
@@ -62,10 +86,12 @@ export default class App extends Component {
   }
 }
 
-const viewstyles = {
+const viewStyles = {
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   instagramLogo:{
       width: (0.50 * windowSize.width),
@@ -75,5 +101,30 @@ const viewstyles = {
   },
   scrollViewStyle: {
     paddingTop: '38%'
+  },
+  instagramLoginButtonView:{
+    backgroundColor: 'transparent',
+    borderColor: colors.socialMediaButtonBorderColor,
+    borderWidth:sizes.borderWidth,
+    borderRadius: sizes.borderRadius,
+    width: standardComponentWidth,
+    height: sizes.buttonHeight
+  },
+  instagramLoginButtonTouchableHighlightStyle:{
+    width: standardComponentWidth,
+    height: sizes.buttonHeight
+  },
+  facebookLoginButtonView:{
+    backgroundColor: colors.facebook
+  },
+  facebookHighlightView:{
+    marginTop: 20,
+    marginBottom:10
   }
+};
+const textStyle = {
+  instagramLoginButtonTextStyle:{
+    color: colors.text,
+    fontWeight: '500'
+  },
 }
