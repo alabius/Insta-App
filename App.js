@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import { ImageBackground, Image, Text, View, StatusBar, ScrollView, Linking } from 'react-native';
+import { ImageBackground, Image, Text, View, StatusBar, ScrollView, Linking, WebView } from 'react-native';
 
 import Dimensions from 'Dimensions';
 
@@ -43,13 +43,41 @@ const urls = {
 export default class App extends Component {
   constructor(props){
     super(props);
-
+    //this is what the state of the app will be when the app first starts up
     this.state = {
-
+      authenticationURL:urls.instagramAuthLogin,
+      accessToken: '',
+      displayAuthenticationWebView: false,
+      displayLoginScreen: true
     }
   }
+
+  onURLStatChange = (webViewState) =>{
+
+// this will search for the access token
+    const accessTokenSubString =  'access_token'
+
+// this will store the current url being display on our browser
+    const currentURL = webViewState.url;
+    console.log("Current URL = " + currentURL);
+
+  }
+
+  authenticationWebViewComponent = () =>{
+    return(
+      <WebView
+        source={{uri:this.state.authenticationURL}}
+        startInLoadingState={true}
+        onNavigationStateChange={this.onURLStatChange}
+      />
+    );
+
+
+  }
+
   buttonTapped = () =>{
-    console.log ('Button succesfully tapped');
+    //when the button is press, change display authentication webview to true
+    this.setState({displayAuthenticationWebView:true, displayLoginScreen: false});
   }
 
   signUpFooterComponent = () => {
@@ -155,9 +183,16 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      this.loginScreenComponent()
-    );
+    if(this.state.displayLoginScreen && this.state.displayAuthenticationWebView == false){
+      return(
+        this.loginScreenComponent()
+      );
+    }
+    else if (this.state.displayLoginScreen == false && this.state.displayAuthenticationWebView){
+      return(
+        this.authenticationWebViewComponent()
+      );
+    }
   }
 }
 
