@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+
+import InstaNavigationBar from './src/components/InstaNavigationBar';
+
 import { ImageBackground, Image, Text, View, StatusBar, ScrollView, Linking, WebView } from 'react-native';
 
 import Dimensions from 'Dimensions';
@@ -36,7 +39,7 @@ const urls = {
   forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
   twitterLogin: 'https://twitter.com/login?lang=en',
   instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en',
-  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=8522126bde704be5bef58142efbffa04&redirect_uri=http://www.dwebmedia.com&response_type=token&scope=basic+follower_list+comments+likes',
+  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=8522126bde704be5bef58142efbffa04&redirect_uri=https://www.naijafocus.net&response_type=token&scope=basic+follower_list+comments+likes',
   instagramLogout: 'https://instagram.com/accounts/logout',
   instagramBase: 'https://www.instagram.com/',
 };
@@ -60,9 +63,28 @@ export default class App extends Component {
 // this will store the current url being display on our browser
     const currentURL = webViewState.url;
     console.log("Current URL = " + currentURL);
+    //if current url includes the access tokek sub string
+    if(currentURL.includes(accessTokenSubString)){
 
+       //if the access token has not been populated
+     if(this.state.accessToken.length < 1){
+       //this will store the indes of a in access_token and add on the number of charater in access_token in access tokern
+       var startIndexOfAccessToken = currentURL.lastIndexOf(accessTokenSubString) + accessTokenSubString.length;
+       var foundAccessToken = currentURL.substr(startIndexOfAccessToken);
+
+       console.log("found Access Token = " + foundAccessToken);
+
+       this.setState({accessToken: foundAccessToken, displayAuthenticationWebView: false, displayLoginScreen:false});
+     }
+    }
   }
-
+  instagramFeedPageComponent = () =>{
+    return(
+      <View style={[ viewStyles.container ]}>
+        <InstaNavigationBar/>
+      </View>
+    );
+  }
   authenticationWebViewComponent = () =>{
     return(
       <WebView
@@ -183,6 +205,8 @@ export default class App extends Component {
   }
 
   render() {
+    const shouldDisplayFeedPage = (this.state.accessToken.length > 1 && this.state.displayAuthenticationWebView == false && this.state.displayLoginScreen == false);
+
     if(this.state.displayLoginScreen && this.state.displayAuthenticationWebView == false){
       return(
         this.loginScreenComponent()
@@ -193,6 +217,12 @@ export default class App extends Component {
         this.authenticationWebViewComponent()
       );
     }
+    else if (shouldDisplayFeedPage){
+      return(
+        this.instagramFeedPageComponent()
+      );
+
+    }
   }
 }
 
@@ -200,7 +230,7 @@ const viewStyles = {
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+
     alignItems: 'center'
   },
   instagramLogo:{
